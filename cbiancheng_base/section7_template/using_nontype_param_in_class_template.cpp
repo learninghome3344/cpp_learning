@@ -1,116 +1,107 @@
 #include <iostream>
 #include <cstring>
-#include <cstdlib>
 using namespace std;
 
-
-/// 1) µ±·ÇÀàĞÍ²ÎÊıÊÇÒ»¸öÕûÊıÊ±£¬´«µİ¸øËüµÄÊµ²Î£¬»òÕßÓÉ±àÒëÆ÷ÍÆµ¼³öµÄÊµ²Î±ØĞëÊÇÒ»¸ö³£Á¿±í´ïÊ½£¬
-/// ÀıÈç10¡¢2 * 30¡¢18 + 23 - 4µÈ£¬µ«²»ÄÜÊÇn¡¢n + 10¡¢n + mµÈ£¨n ºÍ m ¶¼ÊÇ±äÁ¿£©¡£
-
-/// 2) µ±·ÇÀàĞÍ²ÎÊıÊÇÒ»¸öÖ¸Õë£¨ÒıÓÃ£©Ê±£¬°ó¶¨µ½¸ÃÖ¸ÕëµÄÊµ²Î±ØĞë¾ßÓĞ¾²Ì¬µÄÉú´æÆÚ£»
-/// »»¾ä»°Ëµ£¬Êµ²Î±ØĞë´æ´¢ÔÚĞéÄâµØÖ·¿Õ¼äÖĞµÄ¾²Ì¬Êı¾İÇø¡£¾Ö²¿±äÁ¿Î»ÓÚÕ»Çø£¬¶¯Ì¬´´½¨µÄ¶ÔÏóÎ»ÓÚ¶ÑÇø£¬
-/// ËüÃÇ¶¼²»ÄÜÓÃ×÷Êµ²Î¡£
-
-
-
 template<typename T, int N>
-class Array{
+class Array {
 public:
     Array();
     ~Array();
-public:
-    T & operator[](int i);  //ÖØÔØÏÂ±êÔËËã·û[]
-    int length() const { return m_length; }  //»ñÈ¡Êı×é³¤¶È
-    bool capacity(int n);  //¸Ä±äÊı×éÈİÁ¿
+
+    T& operator[](int i);
+    int length() const {
+        return m_length;
+    }
+    // è°ƒæ•´æ•°ç»„é•¿åº¦ä¸ºm_length+n, å¦‚æœm_length+n>m_capacityåˆ™éœ€è¦è°ƒæ•´å®¹é‡
+    bool capacity(int n);
+
 private:
-    int m_length;  //Êı×éµÄµ±Ç°³¤¶È
-    int m_capacity;  //µ±Ç°ÄÚ´æµÄÈİÁ¿£¨ÄÜÈİÄËµÄÔªËØµÄ¸öÊı£©
-    T *m_p;  //Ö¸ÏòÊı×éÄÚ´æµÄÖ¸Õë
+    int m_length; // æ•°ç»„å½“å‰é•¿åº¦
+    int m_capacity; // æ•°ç»„å½“å‰å†…å­˜å®¹é‡
+    T* m_ptr;
 };
 
 template<typename T, int N>
-Array<T, N>::Array(){
-    m_p = new T[N];
+Array<T, N>::Array() {
+    m_ptr = new T[N];
     m_capacity = m_length = N;
 }
 
 template<typename T, int N>
-Array<T, N>::~Array(){
-    delete[] m_p;
+Array<T, N>::~Array() {
+    delete []m_ptr;
 }
 
 template<typename T, int N>
-T & Array<T, N>::operator[](int i){
-    if(i<0 || i>=m_length){
-        cout<<"Exception: Array index out of bounds!"<<endl;
+T& Array<T, N>::operator[](int i) {
+    if (i < 0 || i >= m_length) {
+        cout << "Exception: Array index out of bounds!" << endl;
+        // éœ€è¦å†™æˆtry...catchçš„å½¢å¼
     }
-    return m_p[i];
+    return m_ptr[i];
 }
 
 template<typename T, int N>
-bool Array<T, N>::capacity(int n){
-    if(n > 0){  //Ôö´óÊı×é
-        int len = m_length + n;  //Ôö´óºóµÄÊı×é³¤¶È
-        if(len <= m_capacity){  //ÏÖÓĞÄÚ´æ×ãÒÔÈİÄÉÔö´óºóµÄÊı×é
+bool Array<T, N>::capacity(int n) {
+    int len = m_length + n;
+    // å¢å¤§æ•°ç»„
+    if (n > 0) {
+        if (len <= m_capacity) {
             m_length = len;
             return true;
-        }else{  //ÏÖÓĞÄÚ´æ²»ÄÜÈİÄÉÔö´óºóµÄÊı×é
-            //Ôö¼ÓµÄÄÚ´æ×ãÒÔÈİÄÉ 2*n ¸öÔªËØ, ÎªÉ¶ÒªÊÇ2n£¬¸Ä³ÉnÒ²¿ÉÕı³£ÔËĞĞ
-            T *pTemp = new T[m_length + 2 * n * sizeof(T)];  
-            if(pTemp == NULL){  //ÄÚ´æ·ÖÅäÊ§°Ü
-                cout<<"Exception: Failed to allocate memory!"<<endl;
-                return false;
-            }else{  //ÄÚ´æ·ÖÅä³É¹¦
-                memcpy( pTemp, m_p, m_length*sizeof(T) );
-                delete[] m_p;
-                m_p = pTemp;
-                m_capacity = m_length = len;
-            }
         }
-    }else{  //ÊÕËõÊı×é
-        int len = m_length - abs(n);  //ÊÕËõºóµÄÊı×é³¤¶È
-        if(len < 0){
-            cout<<"Exception: Array length is too small!"<<endl;
+        T* tmp_ptr = new T[m_length + 2 * n * sizeof(T)];
+        if (tmp_ptr == NULL) {
+            cout << "Exception: Failed to allocate memory" << endl;
             return false;
-        }else{
-            m_length = len;
-            return true;
         }
+        memcpy(tmp_ptr, m_ptr, m_length * sizeof(T));
+        delete []m_ptr;
+        m_ptr = tmp_ptr;
+        m_length = len;
+        m_capacity = len + n;
+        return true;
     }
+    // æ”¶ç¼©æ•°ç»„ï¼šä¸€ç§æ˜¯æ”¶ç¼©çš„è¿‡çŸ­å¯¼è‡´æœ€ç»ˆé•¿åº¦å°äº0ï¼Œåˆ™æŠ¥é”™ï¼›ä¸€ç§æ˜¯è™½ç„¶æ”¶ç¼©ï¼Œä½†æ˜¯æœ€ç»ˆæ•°ç»„é•¿åº¦å¤§äº0ï¼Œé‚£ä¹ˆè°ƒæ•´æ•°ç»„é•¿åº¦å³å¯ã€‚
+    if (len < 0) {
+        cout << "Exception: Array length is too small" << endl;
+        return false;
+    }
+    m_length = len;
+    return true;
 }
 
-
-int main(){
+int main() {
     Array<int, 5> arr;
 
-    //ÎªÊı×éÔªËØ¸³Öµ
+    //ä¸ºæ•°ç»„å…ƒç´ èµ‹å€¼
     for(int i=0, len=arr.length(); i<len; i++){
         arr[i] = 2*i;
     }
-   
-    //µÚÒ»´Î´òÓ¡Êı×é
+
+    //ç¬¬ä¸€æ¬¡æ‰“å°æ•°ç»„
     for(int i=0, len=arr.length(); i<len; i++){
         cout<<arr[i]<<" ";
     }
     cout<<endl;
-   
 
-    //À©´óÈİÁ¿²¢ÎªÔö¼ÓµÄÔªËØ¸³Öµ
+
+    //æ‰©å¤§å®¹é‡å¹¶ä¸ºå¢åŠ çš„å…ƒç´ èµ‹å€¼
     arr.capacity(8);
     for(int i=5, len=arr.length(); i<len; i++){
         arr[i] = 2*i;
     }
 
-    //µÚ¶ş´Î´òÓ¡Êı×é
+    //ç¬¬äºŒæ¬¡æ‰“å°æ•°ç»„
     for(int i=0, len=arr.length(); i<len; i++){
         cout<<arr[i]<<" ";
     }
     cout<<endl;
 
-    //ÊÕËõÈİÁ¿
+    //æ”¶ç¼©å®¹é‡
     arr.capacity(-4);
 
-    //µÚÈı´Î´òÓ¡Êı×é
+    //ç¬¬ä¸‰æ¬¡æ‰“å°æ•°ç»„
     for(int i=0, len=arr.length(); i<len; i++){
         cout<<arr[i]<<" ";
     }
