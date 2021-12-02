@@ -1,4 +1,5 @@
-# cpp primer chapter learinging note 
+# cpp primer chapter1 learinging note 
+basic cpp knowledge
 
 ## ubuntu安装相关包
 
@@ -9,7 +10,7 @@
 
 
 2. clang
-- 
+- only for mac
 
 3. cmake
 - 
