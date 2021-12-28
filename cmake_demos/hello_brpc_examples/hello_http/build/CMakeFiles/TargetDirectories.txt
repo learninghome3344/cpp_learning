@@ -1,0 +1,4 @@
+/Users/bingjian.yan/recent_learning/hello_demo/cpp_demo/hello_brpc_examples/hello_http/build/CMakeFiles/rebuild_cache.dir
+/Users/bingjian.yan/recent_learning/hello_demo/cpp_demo/hello_brpc_examples/hello_http/build/CMakeFiles/edit_cache.dir
+/Users/bingjian.yan/recent_learning/hello_demo/cpp_demo/hello_brpc_examples/hello_http/build/CMakeFiles/http_client.dir
+/Users/bingjian.yan/recent_learning/hello_demo/cpp_demo/hello_brpc_examples/hello_http/build/CMakeFiles/http_server.dir

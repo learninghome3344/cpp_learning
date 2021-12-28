@@ -1,0 +1,24 @@
+// 
+
+syntax = "proto2";
+package example;
+
+option cc_generic_services = true;
+
+message HttpRequest {};
+message HttpResponse {};
+
+service HttpService {
+    rpc Hello(HttpRequest) returns(HttpResponse);
+    rpc HelloProtobuf(HttpRequest) returns(HttpResponse);
+}
+
+service FileService {
+    rpc default_method(HttpRequest) returns(HttpResponse);
+}
+
+service QueueService {
+    rpc start(HttpRequest) returns(HttpResponse);
+    rpc stop(HttpRequest) returns(HttpResponse);
+    rpc getstats(HttpRequest) returns(HttpResponse);
+}

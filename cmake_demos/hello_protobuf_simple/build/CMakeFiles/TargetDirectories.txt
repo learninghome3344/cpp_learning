@@ -1,0 +1,3 @@
+/Users/bingjian.yan/recent_learning/cpp_learning/clion_projects/protobuf_learning/build/CMakeFiles/rebuild_cache.dir
+/Users/bingjian.yan/recent_learning/cpp_learning/clion_projects/protobuf_learning/build/CMakeFiles/edit_cache.dir
+/Users/bingjian.yan/recent_learning/cpp_learning/clion_projects/protobuf_learning/build/CMakeFiles/pb_learning.dir

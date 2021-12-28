@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+504368a6ce1c8acea54ae622478b6371 http.pb.h
